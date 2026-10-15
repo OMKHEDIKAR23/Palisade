@@ -1,5 +1,5 @@
 from backend.services.detector import detect_threat
-from backend.services.defense import quarantine_memory
+from backend.services.defense import quarantine_cascade
 from backend.services.memory_graph import add_memory
 
 
@@ -8,7 +8,8 @@ def guard_memory(content: str, source: str, trust: float = 1.0):
 
     if threat["suspicious"]:
         memory = add_memory(content, source, trust)
-        quarantine = quarantine_memory(
+
+        quarantine = quarantine_cascade(
             memory["id"],
             threat["reason"],
         )

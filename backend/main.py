@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from backend.services.memory_graph import add_memory, get_memories
-from backend.services.defense import quarantine_memory
+from backend.services.defense import quarantine_memory, quarantine_cascade
 from backend.services.detector import detect_threat
 from backend.services.guard import guard_memory
 from backend.services.memory_graph import link_derived_memory
 from backend.services.memory_graph import trace_derived_memories
+
 
 
 app = FastAPI(title="Palisade")
@@ -38,7 +39,7 @@ def list_memories():
 
 @app.post("/memories/{memory_id}/quarantine")
 def quarantine(memory_id: str, reason: str):
-    return quarantine_memory(memory_id, reason)
+    return quarantine_cascade(memory_id, reason)
 
 @app.post("/memories/scan")
 def scan_memory(content: str):
